@@ -1,0 +1,37 @@
+@startuml
+
+!theme monokai from \styles
+
+start
+:show_title();
+
+if ( read_ini() ) is ( нет игроков ) then
+                          'для отступов на схеме
+                                    label sp_lab
+    :show_help();
+                                    label sp_lab
+else ()
+                                    label sp_lab
+endif
+
+:get_player_name();
+
+while ( command = input() )
+
+    switch (command)
+
+        case ( 'new' )
+            :game_mode();
+            :res = game();
+            :update_stats(res);
+
+        case ( 'load' )
+            :load();
+            :res = game();
+
+    endswitch
+
+endwhile ( 'quit' )
+end
+
+@enduml
