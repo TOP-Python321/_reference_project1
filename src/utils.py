@@ -22,3 +22,8 @@ def read_players() -> bool:
     data.players_db = config
     return bool(config)
 
+
+def write_players() -> None:
+    """"""
+
+
