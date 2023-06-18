@@ -4,12 +4,14 @@
 
 # стандартная библиотека
 from configparser import ConfigParser
-from pathlib import Path
+# проект
+import data
 
 
-def read_players(players_path: Path | str) -> dict[str, dict[str, int]]:
+def read_players() -> bool:
+    """Возвращает True, если в файле данных игроков есть хотя бы одна запись, иначе False."""
     config = ConfigParser()
-    config.read(players_path)
+    config.read(data.PLAYERS_PATH)
     config = {
         player_name: {
             key: int(value)
@@ -17,5 +19,6 @@ def read_players(players_path: Path | str) -> dict[str, dict[str, int]]:
         }
         for player_name in config.sections()
     }
-    return config
+    data.players_db = config
+    return bool(config)
 

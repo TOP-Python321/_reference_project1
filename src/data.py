@@ -22,3 +22,6 @@ COMMANDS = {
     'выйти': ('quit', 'q', 'выход', 'в'),
 }
 
+
+players_db: dict[str, dict[str, int]] = {}
+
