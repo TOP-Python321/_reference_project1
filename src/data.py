@@ -2,8 +2,15 @@
 Глобальные переменные и константы.
 """
 
-PROMPT = ' > '
+# стандартная библиотека
+from pathlib import Path
 
+
+PLAYERS_PATH = Path(r'..\data\players.ini')
+SAVES_PATH = Path(r'..\data\saves.txt')
+
+
+PROMPT = ' > '
 
 COMMANDS = {
     'начать новую партию': ('new', 'n', 'начать', 'н'),
