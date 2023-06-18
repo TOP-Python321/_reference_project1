@@ -4,6 +4,7 @@
 
 # стандартная библиотека
 from pathlib import Path
+from re import compile
 
 
 PLAYERS_PATH = Path(r'..\data\players.ini')
@@ -11,6 +12,12 @@ SAVES_PATH = Path(r'..\data\saves.txt')
 
 
 PROMPT = ' > '
+
+MESSAGES = {
+    'ввод имени': 'введите имя игрока',
+    'некорректное имя': 'имя игрока должно начинаться с буквы, содержать только буквы, цифры и символ подчёркивания',
+    # '': '',
+}
 
 COMMANDS = {
     'начать новую партию': ('new', 'n', 'начать', 'н'),
@@ -23,5 +30,12 @@ COMMANDS = {
 }
 
 
+NAME_PATTERN = compile(r'[A-Za-zА-ЯЁа-яё][A-Za-zА-ЯЁа-яё\d_]+')
+
+
 players_db: dict[str, dict[str, int]] = {}
+
+
+TOKENS = ('X', 'O')
+players: list[str] = []
 
