@@ -4,7 +4,9 @@
 
 # проект
 import data
+import player
 import utils
+
 
 # 1. Чтение файлов данных
 # 2. ЕСЛИ первый запуск:
@@ -12,6 +14,8 @@ if utils.read_players():
     # вывод титров
     ...
 
+# 3. Запрос имени игрока
+player.get_player_name()
 
 # суперцикл
 while True:
