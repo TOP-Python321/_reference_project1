@@ -30,3 +30,15 @@ def get_player_name() -> None:
     # б) добавление имени игрока к списку активных игроков
     data.players += [name]
 
+
+# 14. Обновление статистики в базе игроков и обновление файлов данных
+def update_stats(result: list[str]) -> None:
+    """Обновляет статистику активных игроков по результатам партии."""
+    if result:
+        winner, looser = result
+        data.players_db[winner]['побед'] += 1
+        data.players_db[looser]['поражений'] += 1
+    else:
+        for name in data.players:
+            data.players_db[name]['ничьих'] += 1
+
