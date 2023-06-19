@@ -17,7 +17,7 @@ def name_input() -> str:
 
 # 3. Запрос имени игрока
 def get_player_name() -> None:
-    """"""
+    """Выполняет авторизацию или регистрацию игрока."""
     name = name_input()
     # а) ЕСЛИ имени нет в базе игроков:
     if name not in data.players_db:
