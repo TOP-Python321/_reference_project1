@@ -15,12 +15,18 @@ def name_input() -> str:
         print(f' {data.MESSAGES["некорректное имя"]} ')
 
 
+# 3. Запрос имени игрока
 def get_player_name() -> None:
     """"""
     name = name_input()
+    # а) ЕСЛИ имени нет в базе игроков:
     if name not in data.players_db:
+        # добавление записи об игроке в базу игроков
         data.players_db[name] = {'побед': 0, 'поражений': 0, 'ничьих': 0}
+        # обновление файлов данных
         utils.write_players()
+        # вывод раздела помощи
         # help.full()
+    # б) добавление имени игрока к списку активных игроков
     data.players += [name]
 
