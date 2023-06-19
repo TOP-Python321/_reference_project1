@@ -5,6 +5,22 @@
 import data
 
 
+def get_human_turn() -> int | None:
+    """"""
+    while True:
+        turn = input(data.PROMPT)
+        if not turn:
+            return None
+        try:
+            turn = int(turn)
+        except ValueError:
+            pass
+        else:
+            if 0 <= turn < data.all_cells:
+                if turn not in data.turns:
+                    return turn
+
+
 def game() -> list[str] | None:
     """Контроллер игрового процесса."""
     # 9. Цикл до максимального количества ходов
