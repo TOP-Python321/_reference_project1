@@ -34,8 +34,16 @@ NAME_PATTERN = compile(r'[A-Za-zА-ЯЁа-яё][A-Za-zА-ЯЁа-яё\d_]+')
 
 
 players_db: dict[str, dict[str, int]] = {}
+saves_db: dict[tuple[str, str], dict] = {}
+
+
+dim: int = 3
+dim_range = range(dim)
+all_cells: int = dim**2
 
 
 TOKENS = ('X', 'O')
 players: list[str] = []
+
+turns: dict[int, str] = {}
 
