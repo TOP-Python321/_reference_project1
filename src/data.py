@@ -45,6 +45,9 @@ dim_range = range(dim)
 all_cells: int = dim**2
 
 
+authorized: str
+
+
 TOKENS = ('X', 'O')
 players: list[str] = []
 

@@ -27,6 +27,7 @@ def get_player_name() -> None:
         utils.write_players()
         # вывод раздела помощи
         # help.full()
+    data.authorized = name
     # б) добавление имени игрока к списку активных игроков
     data.players += [name]
 

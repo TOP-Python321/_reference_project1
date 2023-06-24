@@ -43,8 +43,12 @@ def game() -> list[str] | None:
 
         ...
 
+        # победа и поражение
+        clear()
+        return data.players
     else:
         # ничья
+        clear()
         return []
 
 
@@ -63,4 +67,12 @@ def save() -> None:
             'turns': data.turns
         }
     }
+
+
+def clear() -> None:
+    """"""
+    # noinspection PyTypeChecker
+    data.saves_db.pop(tuple(data.players), None)
+    data.players = [data.authorized]
+    data.turns = {}
 
