@@ -46,6 +46,14 @@ def write_saves() -> None:
     """"""
 
 
+def dim_input() -> int:
+    while True:
+        dim = input(f' {data.MESSAGES["ввод размерности"]}{data.PROMPT}')
+        if data.DIM_PATTERN.fullmatch(dim):
+            return int(dim)
+        print(f' {data.MESSAGES["некорректная размерность"]} ')
+
+
 def change_dim(new_dim: int) -> None:
     """"""
     data.dim = new_dim
