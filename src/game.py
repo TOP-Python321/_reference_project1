@@ -37,7 +37,7 @@ def game() -> list[str] | None:
         # а) ЕСЛИ ввод пустой:
         if turn is None:
             # сохранение незавершённой партии
-            ...
+            save()
             # переход к этапу 4
             return None
 
@@ -53,4 +53,14 @@ def load(players: tuple[str, str], save: dict) -> None:
     data.players = list(players)
     data.turns = save['turns']
     utils.change_dim(save['dim'])
+
+
+def save() -> None:
+    """"""
+    data.saves_db |= {
+        tuple(data.players): {
+            'dim': data.dim,
+            'turns': data.turns
+        }
+    }
 
