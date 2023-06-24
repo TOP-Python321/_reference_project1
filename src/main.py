@@ -33,7 +33,9 @@ while True:
             player.update_stats(result)
 
     elif command in data.COMMANDS['загрузить существующую партию']:
-        # game.load()
+        # нумерованный вывод сохранений активного игрока и запрос конкретного сохранения
+        ...
+        game.load(...)
         result = game.game()
         # 14. Обновление статистики в базе игроков и обновление файлов данных
         if result is not None:
