@@ -23,7 +23,25 @@ def read_players() -> bool:
     return bool(config)
 
 
+def read_saves() -> None:
+    """"""
+    saves = data.SAVES_PATH.read_text(encoding='utf-8').split('\n')
+    for save in saves:
+        players, turns, dim = save.split('!')
+        data.saves_db |= {
+            tuple(players.split(',')): {
+                'dim': int(dim),
+                'turns': {
+                    int(turn): data.TOKENS[i%2]
+                    for i, turn in enumerate(turns.split(','))
+                },
+            }
+        }
+
+
 def write_players() -> None:
     """Записывает в файл данных игроков информацию из соответствующей глобальной структуры данных."""
 
 
+def write_saves() -> None:
+    """"""
