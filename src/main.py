@@ -42,6 +42,9 @@ while True:
             player.update_stats(result)
             ...
 
+    elif command in data.COMMANDS['изменить размер поля']:
+        utils.change_dim(utils.dim_input())
+
     # elif ...
 
     elif command in data.COMMANDS['выйти']:
