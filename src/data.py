@@ -33,7 +33,7 @@ COMMANDS = {
 
 
 NAME_PATTERN = compile(r'[A-Za-zА-ЯЁа-яё][A-Za-zА-ЯЁа-яё\d_]+')
-DIM_PATTERN = compile(r'[3-9]|(?:1[0-9]|20)')
+DIM_PATTERN = compile(r'[3-9]|1[0-9]|20')
 
 
 players_db: dict[str, dict[str, int]] = {}
