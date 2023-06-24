@@ -61,9 +61,12 @@ def change_dim(new_dim: int) -> None:
     data.all_cells = new_dim**2
 
 
-def field_template() -> str:
+def field_template(data_width: int = None) -> str:
     """"""
-    field_width = data.dim*(3 + max(len(t) for t in data.TOKENS)) - 1
+    if data_width is None:
+        field_width = data.dim*(3 + max(len(t) for t in data.TOKENS)) - 1
+    else:
+        field_width = data.dim*(3 + data_width) - 1
     v_sep, h_sep = '|', '—'
     v_sep = v_sep.join([' {} ']*data.dim)
     h_sep = f'\n{h_sep*field_width}\n'
