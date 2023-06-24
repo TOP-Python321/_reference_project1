@@ -50,3 +50,4 @@ players: list[str] = []
 
 turns: dict[int, str] = {}
 
+field: str = ''

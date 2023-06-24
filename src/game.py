@@ -25,6 +25,7 @@ def get_human_turn() -> int | None:
 
 def game() -> list[str] | None:
     """Контроллер игрового процесса."""
+    data.field = utils.field_template()
     # 9. Цикл до максимального количества ходов
     for t in range(len(data.turns), data.all_cells):
         o = t % 2
