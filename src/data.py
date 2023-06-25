@@ -11,6 +11,10 @@ PLAYERS_PATH = Path(r'..\data\players.ini')
 SAVES_PATH = Path(r'..\data\saves.txt')
 
 
+DEBUG = True
+debug_data = {}
+
+
 PROMPT = ' > '
 
 MESSAGES = {
@@ -44,13 +48,16 @@ dim: int = 3
 dim_range = range(dim)
 all_cells: int = dim**2
 
-
 authorized: str
 
-
 TOKENS = ('X', 'O')
+WEIGHT_OWN = 1.5
+WEIGHT_FOE = 1.0
+START_MATRICES = ()
+
 players: list[str] = []
 
+board: dict[int, str] = dict.fromkeys(range(1, all_cells+1), ' ')
 turns: dict[int, str] = {}
 
 field: str = ''
