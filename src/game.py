@@ -2,7 +2,10 @@
 Настройка партии и игровой процесс.
 """
 
+# стандартная библиотека
+from shutil import get_terminal_size
 # проект
+import bot
 import data
 import utils
 
@@ -30,6 +33,10 @@ def get_bot_turn() -> int:
 def game() -> list[str] | None:
     """Контроллер игрового процесса."""
     data.field = utils.field_template()
+    data.START_MATRICES = (
+        bot.calc_sm_cross(),
+        bot.calc_sm_zero()
+    )
     # 9. Цикл до максимального количества ходов
     for t in range(len(data.turns), data.all_cells):
         o = t % 2
@@ -49,6 +56,17 @@ def game() -> list[str] | None:
             # переход к этапу 4
             return None
 
+        # 11. Обновление глобальных переменных (опционально: выполнение автосохранения и обновление файлов данных)
+        ...
+
+        # 12. Вывод игрового поля со сделанным ходом
+        # noinspection PyTypeChecker
+        print_board(o)
+
+        # 13. ЕСЛИ есть победная комбинация:
+        #          переход к этапу 14
+        #     ЕСЛИ нет победной комбинации:
+        #           переход к этапу 9
         ...
 
         # победа и поражение
@@ -75,6 +93,24 @@ def save() -> None:
             'turns': data.turns
         }
     }
+
+
+def print_board(right: bool = False) -> None:
+    """"""
+    board = data.field.format(*(data.board | data.turns).values())
+    if data.DEBUG:
+        matr = bot.vectorization(data.debug_data.get('result'))
+        cw = max(len(str(n)) for n in matr)
+        matr = utils.field_template(cw).format(*matr)
+        board = utils.concatenate_rows(board, matr)
+
+    if right:
+        terminal_width = get_terminal_size()[0] - 1
+        margin = terminal_width - max(len(line) for line in board.split())
+        margin = '\n'.join(' '*margin for _ in board.split())
+        board = utils.concatenate_rows(margin, board)
+
+    print(board)
 
 
 def clear() -> None:
