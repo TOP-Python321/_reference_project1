@@ -23,6 +23,10 @@ def get_human_turn() -> int | None:
                     return turn
 
 
+def get_bot_turn() -> int:
+    """"""
+
+
 def game() -> list[str] | None:
     """Контроллер игрового процесса."""
     data.field = utils.field_template()
@@ -32,8 +36,12 @@ def game() -> list[str] | None:
 
         ...
 
-        # 10. Запрос хода игрока
-        turn = get_human_turn()
+        if data.players[o].startswith('#'):
+            # 10. Расчёт хода бота
+            turn = get_bot_turn()
+        else:
+            # 10. Запрос хода игрока
+            turn = get_human_turn()
         # а) ЕСЛИ ввод пустой:
         if turn is None:
             # сохранение незавершённой партии
