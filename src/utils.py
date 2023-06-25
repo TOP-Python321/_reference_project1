@@ -72,3 +72,19 @@ def field_template(data_width: int = None) -> str:
     h_sep = f'\n{h_sep*field_width}\n'
     return h_sep.join([v_sep]*data.dim)
 
+
+def concatenate_rows(
+        matrix1: str,
+        matrix2: str,
+        *matrices: str,
+        padding: int = 8
+) -> str:
+    """"""
+    matrices = matrix1, matrix2, *matrices
+    matrices = [m.split('\n') for m in matrices]
+    padding = ' '*padding
+    return '\n'.join(
+        padding.join(row)
+        for row in zip(*matrices)
+    )
+
