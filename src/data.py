@@ -5,13 +5,14 @@
 # стандартная библиотека
 from pathlib import Path
 from re import compile
+from sys import argv
 
 
 PLAYERS_PATH = Path(r'..\data\players.ini')
 SAVES_PATH = Path(r'..\data\saves.txt')
 
 
-DEBUG = True
+DEBUG = argv[1:] == ['debug']
 debug_data = {}
 
 
