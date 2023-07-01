@@ -23,7 +23,7 @@ def read_players() -> bool:
 
 
 def read_saves() -> None:
-    """"""
+    """Читает файл данных сохранений, сохраняет информацию в соответствующую глобальную структуру данных."""
     saves = data.SAVES_PATH.read_text(encoding='utf-8').split('\n')
     for save in saves:
         players, turns, dim = save.split('!')
@@ -40,10 +40,19 @@ def read_saves() -> None:
 
 def write_players() -> None:
     """Записывает в файл данных игроков информацию из соответствующей глобальной структуры данных."""
+    config = ConfigParser()
+    config.read_dict(data.players_db)
+    with open(data.PLAYERS_PATH, 'w', encoding='utf-8') as fileout:
+        config.write(fileout)
 
 
 def write_saves() -> None:
-    """"""
+    """Записывает в файл данных сохранений информацию из соответствующей глобальной структуры данных."""
+    saves = '\n'.join(
+        f"{','.join(players)}!{','.join(map(str, save['turns']))}!{save['dim']}"
+        for players, save in data.saves_db.items()
+    )
+    data.SAVES_PATH.write_text(saves, encoding='utf-8')
 
 
 def dim_input() -> int:
