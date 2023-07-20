@@ -72,6 +72,7 @@ def change_dim(new_dim: int) -> None:
     data.all_cells = new_dim**2
     data.board = dict.fromkeys(range(1, data.all_cells+1), ' ')
     data.MESSAGES['ход не в диапазоне'] = f' ! номер ячейки должен находиться в диапазоне от 0 до {data.all_cells-1} включительно'
+    data.field = field_template()
 
 
 def field_template(data_width: int = None) -> str:

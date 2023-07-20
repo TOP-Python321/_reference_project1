@@ -9,13 +9,14 @@ import player
 import utils
 
 
-utils.header_text(data.APP_TITLE, level=1)
+print(utils.header_text(data.APP_TITLE, level=1))
 
 # 1. Чтение файлов данных
 # 2. ЕСЛИ первый запуск:
 if utils.read_players():
     # вывод титров
     ...
+utils.read_saves()
 
 # 3. Запрос имени игрока
 player.get_player_name()
@@ -37,11 +38,11 @@ while True:
     elif command in data.COMMANDS['загрузить существующую партию']:
         # нумерованный вывод сохранений активного игрока и запрос конкретного сохранения
         ...
-        game.load(...)
-        result = game.game()
-        # 14. Обновление статистики в базе игроков и обновление файлов данных
-        if result is not None:
-            player.update_stats(result)
+        if game.load():
+            result = game.game()
+            # 14. Обновление статистики в базе игроков и обновление файлов данных
+            if result is not None:
+                player.update_stats(result)
 
     elif command in data.COMMANDS['изменить размер поля']:
         utils.change_dim(utils.dim_input())

@@ -27,11 +27,11 @@ def mode() -> None:
     match player.ask_player('ввод токена'):
         case '2':
             data.players.reverse()
+    data.field = utils.field_template()
 
 
 def game() -> list[str] | None:
     """Контроллер игрового процесса."""
-    data.field = utils.field_template()
     data.START_MATRICES = (
         bot.calc_sm_cross(),
         bot.calc_sm_zero()
@@ -97,11 +97,24 @@ def get_human_turn() -> int | None:
                 print(data.MESSAGES['ход не в диапазоне'])
 
 
-def load(players: tuple[str, str], save: dict) -> None:
+def load() -> bool:
     """"""
+    save = player.ask_for_load()
+    if not save:
+        print(data.MESSAGES['нет сохранений'])
+        return False
+    players, save = save
     data.players = list(players)
-    data.turns = save['turns']
     utils.change_dim(save['dim'])
+
+    o = len(save['turns']) % 2
+    last_turn = save['turns'].popitem()
+    data.turns = save['turns']
+    print_board(o)
+    save['turns'] |= (last_turn,)
+    data.turns = save['turns']
+    print_board(o-1)
+    return True
 
 
 def save() -> None:
@@ -112,6 +125,7 @@ def save() -> None:
             'turns': data.turns
         }
     }
+    utils.write_saves()
 
 
 def print_board(right: bool = False) -> None:
