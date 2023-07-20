@@ -85,17 +85,17 @@ def field_template(data_width: int = None) -> str:
 
 
 def concatenate_rows(
-        matrix1: str,
-        matrix2: str,
-        *matrices: str,
+        multiline1: str,
+        multiline2: str,
+        *multilines: str,
         padding: int = 8
 ) -> str:
     """"""
-    matrices = matrix1, matrix2, *matrices
-    matrices = [m.split('\n') for m in matrices]
+    multilines = multiline1, multiline2, *multilines
+    multilines = [m.split('\n') for m in multilines]
     padding = ' '*padding
     return '\n'.join(
         padding.join(row)
-        for row in zip(*matrices)
+        for row in zip(*multilines)
     )
 
