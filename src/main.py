@@ -21,7 +21,7 @@ player.get_player_name()
 # суперцикл
 while True:
     # 4. Ожидание ввода команды
-    command = input(data.PROMPT)
+    command = input(data.MESSAGES['ввод команды'])
 
     if command in data.COMMANDS['начать новую партию']:
         # 5. Запрос режима игры:
