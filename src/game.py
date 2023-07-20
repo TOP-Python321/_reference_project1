@@ -13,17 +13,21 @@ import utils
 def get_human_turn() -> int | None:
     """Запрашивает пользовательский ввод для хода во время игрового процесса. При некорректном вводе повторяет запрос до получения корректного ввода."""
     while True:
-        turn = input(data.PROMPT)
+        turn = input(data.MESSAGES['ввод хода'])
         if not turn:
             return None
         try:
             turn = int(turn)
         except ValueError:
-            pass
+            print(data.MESSAGES['ход не число'])
         else:
-            if 0 <= turn < data.all_cells:
+            if 1 <= turn <= data.all_cells:
                 if turn not in data.turns:
                     return turn
+                else:
+                    print(data.MESSAGES['ход в занятую'])
+            else:
+                print(data.MESSAGES['ход не в диапазоне'])
 
 
 def get_bot_turn() -> int:
