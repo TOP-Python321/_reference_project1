@@ -41,6 +41,28 @@ def ask_player(question: str) -> str:
         print(data.MESSAGES['некорректный выбор'])
 
 
+def ask_for_load() -> tuple[tuple[str, str], dict] | None:
+    """"""
+    slots = []
+    for i, players in enumerate(data.saves_db, 1):
+        if data.authorized in players:
+            players = ', '.join(
+                f'{t}: {p}'
+                for t, p in zip(data.TOKENS, players)
+            )
+            slots += [f'    {i} - {players}']
+    if not slots:
+        return None
+    print(data.MESSAGES['ввод сохранения'].format('\n'.join(slots)))
+    while True:
+        choice = input(' > ')
+        try:
+            choice = int(choice)
+            return tuple(data.saves_db.items())[choice-1]
+        except (ValueError, IndexError):
+            print(data.MESSAGES['некорректное сохранение'].format(i))
+
+
 # 14. Обновление статистики в базе игроков и обновление файлов данных
 def update_stats(result: list[str]) -> None:
     """Обновляет статистику активных игроков по результатам партии."""
