@@ -13,30 +13,20 @@ import utils
 
 def mode() -> None:
     """"""
-    while True:
-        choice = input(data.MESSAGES['ввод режима'])
-        if choice == '1':
-            while True:
-                choice = input(data.MESSAGES['ввод уровня'])
-                if choice == '1':
+    match player.ask_player('ввод режима'):
+        case '1':
+            match player.ask_player('ввод уровня'):
+                case '1':
                     data.players += ['#1']
                     data.bot_level = bot.easy_mode
-                    break
-                elif choice == '2':
+                case '2':
                     data.players += ['#2']
                     data.bot_level = bot.hard_mode
-                    break
-                else:
-                    print(data.MESSAGES['некорректный выбор'])
-            break
-        elif choice == '2':
+        case '2':
             player.get_player_name()
-            break
-        else:
-            print(data.MESSAGES['некорректный выбор'])
-    choice = input(data.MESSAGES['ввод токена'])
-    if choice == '2':
-        data.players.reverse()
+    match player.ask_player('ввод токена'):
+        case '2':
+            data.players.reverse()
 
 
 def game() -> list[str] | None:

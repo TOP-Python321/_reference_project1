@@ -32,6 +32,15 @@ def get_player_name() -> None:
     data.players += [name]
 
 
+def ask_player(question: str) -> str:
+    """"""
+    while True:
+        choice = input(data.MESSAGES[question])
+        if choice in '12':
+            return choice
+        print(data.MESSAGES['некорректный выбор'])
+
+
 # 14. Обновление статистики в базе игроков и обновление файлов данных
 def update_stats(result: list[str]) -> None:
     """Обновляет статистику активных игроков по результатам партии."""
