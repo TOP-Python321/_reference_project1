@@ -7,31 +7,36 @@ from shutil import get_terminal_size
 # проект
 import bot
 import data
+import player
 import utils
 
 
-def get_human_turn() -> int | None:
-    """Запрашивает пользовательский ввод для хода во время игрового процесса. При некорректном вводе повторяет запрос до получения корректного ввода."""
-    while True:
-        turn = input(data.MESSAGES['ввод хода'])
-        if not turn:
-            return None
-        try:
-            turn = int(turn)
-        except ValueError:
-            print(data.MESSAGES['ход не число'])
-        else:
-            if 1 <= turn <= data.all_cells:
-                if turn not in data.turns:
-                    return turn
-                else:
-                    print(data.MESSAGES['ход в занятую'])
-            else:
-                print(data.MESSAGES['ход не в диапазоне'])
-
-
-def get_bot_turn() -> int:
+def mode() -> None:
     """"""
+    while True:
+        choice = input(data.MESSAGES['ввод режима'])
+        if choice == '1':
+            while True:
+                choice = input(data.MESSAGES['ввод уровня'])
+                if choice == '1':
+                    data.players += ['#1']
+                    data.bot_level = bot.easy_mode
+                    break
+                elif choice == '2':
+                    data.players += ['#2']
+                    data.bot_level = bot.hard_mode
+                    break
+                else:
+                    print(data.MESSAGES['некорректный выбор'])
+            break
+        elif choice == '2':
+            player.get_player_name()
+            break
+        else:
+            print(data.MESSAGES['некорректный выбор'])
+    choice = input(data.MESSAGES['ввод токена'])
+    if choice == '2':
+        data.players.reverse()
 
 
 def game() -> list[str] | None:
@@ -49,7 +54,7 @@ def game() -> list[str] | None:
 
         if data.players[o].startswith('#'):
             # 10. Расчёт хода бота
-            turn = get_bot_turn()
+            turn = data.bot_level()
         else:
             # 10. Запрос хода игрока
             turn = get_human_turn()
@@ -80,6 +85,26 @@ def game() -> list[str] | None:
         # ничья
         clear()
         return []
+
+
+def get_human_turn() -> int | None:
+    """Запрашивает пользовательский ввод для хода во время игрового процесса. При некорректном вводе повторяет запрос до получения корректного ввода."""
+    while True:
+        turn = input(data.MESSAGES['ввод хода'])
+        if not turn:
+            return None
+        try:
+            turn = int(turn)
+        except ValueError:
+            print(data.MESSAGES['ход не число'])
+        else:
+            if 1 <= turn <= data.all_cells:
+                if turn not in data.turns:
+                    return turn
+                else:
+                    print(data.MESSAGES['ход в занятую'])
+            else:
+                print(data.MESSAGES['ход не в диапазоне'])
 
 
 def load(players: tuple[str, str], save: dict) -> None:
@@ -122,5 +147,6 @@ def clear() -> None:
     # noinspection PyTypeChecker
     data.saves_db.pop(tuple(data.players), None)
     data.players = [data.authorized]
+    data.bot_level = None
     data.turns = {}
 

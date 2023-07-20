@@ -6,7 +6,6 @@
 from configparser import ConfigParser
 from shutil import get_terminal_size
 from typing import Literal
-
 # проект
 import data
 

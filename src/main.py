@@ -27,7 +27,7 @@ while True:
 
     if command in data.COMMANDS['начать новую партию']:
         # 5. Запрос режима игры:
-        ...
+        game.mode()
         # партия
         result = game.game()
         # 14. Обновление статистики в базе игроков и обновление файлов данных
@@ -42,7 +42,6 @@ while True:
         # 14. Обновление статистики в базе игроков и обновление файлов данных
         if result is not None:
             player.update_stats(result)
-            ...
 
     elif command in data.COMMANDS['изменить размер поля']:
         utils.change_dim(utils.dim_input())
