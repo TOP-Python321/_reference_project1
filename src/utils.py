@@ -4,6 +4,9 @@
 
 # стандартная библиотека
 from configparser import ConfigParser
+from shutil import get_terminal_size
+from typing import Literal
+
 # проект
 import data
 
@@ -57,10 +60,10 @@ def write_saves() -> None:
 
 def dim_input() -> int:
     while True:
-        dim = input(f' {data.MESSAGES["ввод размерности"]}{data.PROMPT}')
+        dim = input(data.MESSAGES["ввод размерности"])
         if data.DIM_PATTERN.fullmatch(dim):
             return int(dim)
-        print(f' {data.MESSAGES["некорректная размерность"]} ')
+        print(data.MESSAGES["некорректная размерность"])
 
 
 def change_dim(new_dim: int) -> None:
@@ -98,4 +101,59 @@ def concatenate_rows(
         padding.join(row)
         for row in zip(*multilines)
     )
+
+
+def header_text(
+        text: str,
+        *,
+        level: Literal[1, 2],
+        v_fill: str = '#',
+        h_fill: str = '='
+) -> str:
+    """Возвращает переданную строку, форматированную как заголовок. Форматирование отличается для разных уровней заголовка. Также могут быть изменены символы-заполнители."""
+    term_width = get_terminal_size()[0] - 1
+    data_width = term_width - 12
+    text_len = len(text)
+
+    if level == 1:
+        text = text.upper()
+        edge = v_fill + h_fill*(term_width-2) + v_fill
+        padding = v_fill + ' '*(term_width-2) + v_fill
+        text = '\n'.join(
+            v_fill + line.center(term_width - 2) + v_fill
+            for line in columnize(text, term_width - 6)
+        )
+        return f'{edge}\n{padding}\n{text}\n{padding}\n{edge}'
+
+    elif level == 2:
+        text = text.upper()
+        if text_len <= data_width:
+            return f'  {text}  '.center(term_width, h_fill)
+        else:
+            return '\n'.join(
+                h_fill*4 + line.center(data_width + 4) + h_fill*4
+                for line in columnize(text, data_width)
+            )
+
+    # elif level == 3:
+    #     ...
+
+    else:
+        raise ValueError
+
+
+def columnize(text: str, column_width: int) -> list[str]:
+    """Разбивает переданную строку на отдельные слова и формирует из слов строки, длины которых не превышают заданное значение. Возвращает список строк, к которым впоследствии может быть применено любое выравнивание."""
+    multiline, line_len, i = [[]], 0, 0
+    for word in text.split():
+        word_len = len(word)
+        if line_len + word_len + len(multiline[i]) <= column_width:
+            multiline[i] += [word]
+            line_len += word_len
+        else:
+            multiline += [[word]]
+            line_len = word_len
+            i += 1
+    return [' '.join(line) for line in multiline]
+
 
