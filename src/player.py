@@ -9,10 +9,10 @@ import utils
 
 def name_input() -> str:
     while True:
-        name = input(f' {data.MESSAGES["ввод имени"]}{data.PROMPT}')
+        name = input(data.MESSAGES["ввод имени"])
         if data.NAME_PATTERN.fullmatch(name):
             return name
-        print(f' {data.MESSAGES["некорректное имя"]} ')
+        print(data.MESSAGES["некорректное имя"])
 
 
 # 3. Запрос имени игрока
@@ -37,9 +37,18 @@ def update_stats(result: list[str]) -> None:
     """Обновляет статистику активных игроков по результатам партии."""
     if result:
         winner, looser = result
-        data.players_db[winner]['побед'] += 1
-        data.players_db[looser]['поражений'] += 1
+        try:
+            data.players_db[winner]['побед'] += 1
+        except KeyError:
+            pass
+        try:
+            data.players_db[looser]['поражений'] += 1
+        except KeyError:
+            pass
     else:
         for name in data.players:
-            data.players_db[name]['ничьих'] += 1
+            try:
+                data.players_db[name]['ничьих'] += 1
+            except KeyError:
+                pass
 
