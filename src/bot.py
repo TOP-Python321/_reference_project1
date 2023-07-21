@@ -15,13 +15,13 @@ Series = Sequence[Real | str]
 Matrix = Sequence[Series]
 
 
-def easy_mode() -> int:
+def easy_mode(bot_token_index) -> int:
     """Возвращает номер случайной свободной клетки игрового поля."""
 
 
-def hard_mode() -> int:
+
+def hard_mode(bot_token_index: int) -> int:
     """Вычисляет наиболее выигрышный ход и возвращает номер клетки для этого хода."""
-    bot_token_index = data.players.index('#2')
     tw = weights_tokens(bot_token_index)
     if data.DEBUG:
         data.debug_data |= {'tokens': tw}
@@ -39,7 +39,7 @@ def hard_mode() -> int:
         return easy_mode()
 
 
-def weights_tokens(token_index: int) -> Matrix:
+def weights_tokens(bot_token_index: int) -> Matrix:
     """Конструирует и возвращает матрицу весов занятых ячеек игрового поля."""
     board = tuple((data.board | data.turns).values())
     board = matricization(board)
@@ -47,9 +47,9 @@ def weights_tokens(token_index: int) -> Matrix:
     for i in data.dim_range:
         for j in data.dim_range:
             try:
-                if board[i][j] == data.TOKENS[token_index]:
+                if board[i][j] == data.TOKENS[bot_token_index]:
                     tokensweights[i][j] = data.WEIGHT_OWN
-                elif board[i][j] == data.TOKENS[token_index-1]:
+                elif board[i][j] == data.TOKENS[bot_token_index - 1]:
                     tokensweights[i][j] = data.WEIGHT_FOE
             except IndexError:
                 pass

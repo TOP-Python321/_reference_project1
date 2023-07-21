@@ -33,13 +33,14 @@ def game() -> list[str] | None:
     """Контроллер игрового процесса."""
     # 9. Цикл до максимального количества ходов
     for t in range(len(data.turns), data.all_cells):
-        o = t % 2
+        # индекс-указатель на игрока и токен
+        pointer = t % 2
 
         ...
 
-        if data.players[o].startswith('#'):
+        if data.players[pointer].startswith('#'):
             # 10. Расчёт хода бота
-            turn = data.bot_level()
+            turn = data.bot_level(pointer)
         else:
             # 10. Запрос хода игрока
             turn = get_human_turn()
@@ -55,7 +56,7 @@ def game() -> list[str] | None:
 
         # 12. Вывод игрового поля со сделанным ходом
         # noinspection PyTypeChecker
-        print_board(o)
+        print_board(pointer)
 
         # 13. ЕСЛИ есть победная комбинация:
         #          переход к этапу 14
