@@ -32,7 +32,7 @@ def mode() -> None:
             data.players.reverse()
 
 
-def game() -> list[str] | None:
+def game() -> tuple[str, str] | tuple | None:
     """Контроллер игрового процесса."""
     # 9. Цикл до максимального количества ходов
     for t in range(len(data.turns), data.all_cells):
@@ -62,13 +62,13 @@ def game() -> list[str] | None:
         if is_wins(pointer):
             winner = data.MESSAGES['победитель'].format(data.players[pointer])
             print('\n', utils.header_text(winner, level=2), sep='')
-            return data.players
+            return data.players[pointer], data.players[pointer-1]
         # ЕСЛИ нет победной комбинации:
         #      переход к этапу 9
     else:
         # ничья
         print('\n', utils.header_text(data.MESSAGES['ничья'], level=2), sep='')
-        return []
+        return ()
 
 
 def get_human_turn() -> int | None:
@@ -136,6 +136,8 @@ def print_board(right: int = False) -> None:
         margin = terminal_width - max(len(line) for line in board.split())
         margin = '\n'.join(' '*margin for _ in board.split())
         board = utils.concatenate_rows(margin, board, padding=0)
+    else:
+        board = f'\n{board}'
 
     print(board)
 
