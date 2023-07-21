@@ -40,7 +40,9 @@ saves_db: dict[tuple[str, str], dict] = {}
 dim: int = None
 dim_range: range = None
 all_cells: int = None
+all_cells_range: range = None
 
+wins: list[set[int]] = []
 
 TOKENS = ('X', 'O')
 

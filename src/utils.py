@@ -71,13 +71,32 @@ def change_dim(new_dim: int) -> None:
     data.dim = new_dim
     data.dim_range = range(new_dim)
     data.all_cells = new_dim**2
+    data.all_cells_range = range(1, data.all_cells+1)
+    data.wins = win_combinations()
     data.field = field_template()
-    data.board = dict.fromkeys(range(1, data.all_cells+1), ' ')
+    data.board = dict.fromkeys(data.all_cells_range, ' ')
     data.MESSAGES['ход не в диапазоне'] = f' ! номер ячейки должен находиться в диапазоне от 1 до {data.all_cells} включительно'
     data.START_MATRICES = (
         bot.calc_sm_cross(),
         bot.calc_sm_zero()
     )
+
+
+def win_combinations() -> list[set[int]]:
+    """"""
+    wins = [
+        set(data.all_cells_range[::data.dim+1]),
+        set(data.all_cells_range[data.dim-1:data.all_cells-data.dim+1:data.dim-1]),
+    ]
+    wins += [
+        set(data.all_cells_range[i:i+data.dim])
+        for i in range(0, data.all_cells, data.dim)
+    ]
+    wins += [
+        set(data.all_cells_range[i::data.dim])
+        for i in data.dim_range
+    ]
+    return wins
 
 
 def field_template(data_width: int = None) -> str:
