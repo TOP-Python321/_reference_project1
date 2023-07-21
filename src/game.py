@@ -5,6 +5,8 @@
 # стандартная библиотека
 from itertools import islice
 from shutil import get_terminal_size
+from time import sleep
+
 # проект
 import bot
 import data
@@ -39,6 +41,7 @@ def game() -> list[str] | None:
         if data.players[pointer].startswith('#'):
             # 10. Расчёт хода бота
             turn = data.bot_level(pointer)
+            sleep(0.5)
         else:
             # 10. Запрос хода игрока
             turn = get_human_turn()
