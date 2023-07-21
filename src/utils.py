@@ -74,6 +74,9 @@ def change_dim(new_dim: int) -> None:
     data.all_cells_range = range(1, data.all_cells+1)
     data.wins = win_combinations()
     data.field = field_template()
+    width = max(len(str(n)) for n in data.all_cells_range)
+    ft = field_template(data_width=width)
+    data.field_with_coords = ft.format(*(f'{n:^{width}}' for n in data.all_cells_range))
     data.board = dict.fromkeys(data.all_cells_range, ' ')
     data.MESSAGES['ход не в диапазоне'] = f' ! номер ячейки должен находиться в диапазоне от 1 до {data.all_cells} включительно'
     data.START_MATRICES = (

@@ -34,6 +34,8 @@ def mode() -> None:
 
 def game() -> tuple[str, str] | tuple | None:
     """Контроллер игрового процесса."""
+    print(f'\n{data.field_with_coords}')
+
     # 9. Цикл до максимального количества ходов
     for t in range(len(data.turns), data.all_cells):
         # индекс-указатель на игрока и токен
@@ -41,7 +43,7 @@ def game() -> tuple[str, str] | tuple | None:
         if data.players[pointer].startswith('#'):
             # 10. Расчёт хода бота
             turn = data.bot_level(pointer)
-            sleep(0.5)
+            sleep(0.35)
         else:
             # 10. Запрос хода игрока
             turn = get_human_turn()
