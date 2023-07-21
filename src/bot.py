@@ -8,7 +8,6 @@ from numbers import Real
 from random import choice
 # проект
 import data
-import utils
 
 
 # переменные для аннотации
@@ -35,7 +34,7 @@ def hard_mode() -> int:
     if data.DEBUG:
         data.debug_data |= {'result': ew}
     if any(vectorization(ew)):
-        return index_of_rand_max(vectorization(ew))
+        return index_of_rand_max(vectorization(ew)) + 1
     else:
         return easy_mode()
 
@@ -141,7 +140,7 @@ def matrix_add(matrix1: Matrix,
 def index_of_rand_max(series: Series) -> int:
     """Возвращает индекс случайного среди равных максимальных значений в последовательности."""
     m = max(series)
-    return choice([i for i, v in enumerate(series, 1) if v == m])
+    return choice([i for i, v in enumerate(series) if v == m])
 
 
 def calc_sm_cross() -> Matrix:

@@ -7,6 +7,7 @@ from configparser import ConfigParser
 from shutil import get_terminal_size
 from typing import Literal
 # проект
+import bot
 import data
 
 
@@ -71,7 +72,7 @@ def change_dim(new_dim: int) -> None:
     data.dim_range = range(new_dim)
     data.all_cells = new_dim**2
     data.board = dict.fromkeys(range(1, data.all_cells+1), ' ')
-    data.MESSAGES['ход не в диапазоне'] = f' ! номер ячейки должен находиться в диапазоне от 0 до {data.all_cells-1} включительно'
+    data.MESSAGES['ход не в диапазоне'] = f' ! номер ячейки должен находиться в диапазоне от 1 до {data.all_cells} включительно'
     data.field = field_template()
 
 
