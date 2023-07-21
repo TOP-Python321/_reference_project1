@@ -17,6 +17,7 @@ if utils.read_players():
     # вывод титров
     ...
 utils.read_saves()
+utils.change_dim(3)
 
 # 3. Запрос имени игрока
 player.get_player_name()

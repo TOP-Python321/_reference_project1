@@ -37,24 +37,26 @@ players_db: dict[str, dict[str, int]] = {}
 saves_db: dict[tuple[str, str], dict] = {}
 
 
-dim: int = 3
-dim_range = range(dim)
-all_cells: int = dim**2
+dim: int = None
+dim_range: range = None
+all_cells: int = None
 
-authorized: str
 
 TOKENS = ('X', 'O')
+
 WEIGHT_OWN = 1.5
 WEIGHT_FOE = 1.0
+
 START_MATRICES = ()
 
+authorized: str
 players: list[str] = []
 bot_level: Callable = None
 
-board: dict[int, str] = dict.fromkeys(range(1, all_cells+1), ' ')
-turns: dict[int, str] = {}
-
 field: str = ''
+
+board: dict[int, str] = {}
+turns: dict[int, str] = {}
 
 
 MESSAGES = {

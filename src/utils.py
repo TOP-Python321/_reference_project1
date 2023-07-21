@@ -71,9 +71,13 @@ def change_dim(new_dim: int) -> None:
     data.dim = new_dim
     data.dim_range = range(new_dim)
     data.all_cells = new_dim**2
+    data.field = field_template()
     data.board = dict.fromkeys(range(1, data.all_cells+1), ' ')
     data.MESSAGES['ход не в диапазоне'] = f' ! номер ячейки должен находиться в диапазоне от 1 до {data.all_cells} включительно'
-    data.field = field_template()
+    data.START_MATRICES = (
+        bot.calc_sm_cross(),
+        bot.calc_sm_zero()
+    )
 
 
 def field_template(data_width: int = None) -> str:

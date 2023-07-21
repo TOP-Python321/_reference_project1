@@ -27,15 +27,10 @@ def mode() -> None:
     match player.ask_player('ввод токена'):
         case '2':
             data.players.reverse()
-    data.field = utils.field_template()
 
 
 def game() -> list[str] | None:
     """Контроллер игрового процесса."""
-    data.START_MATRICES = (
-        bot.calc_sm_cross(),
-        bot.calc_sm_zero()
-    )
     # 9. Цикл до максимального количества ходов
     for t in range(len(data.turns), data.all_cells):
         o = t % 2
