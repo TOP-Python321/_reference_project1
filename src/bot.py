@@ -70,7 +70,7 @@ def weights_empty(tokensweights: Matrix) -> Matrix:
                     get_antidiag(tokensweights, i, j)
                 ]
                 for seq in series:
-                    if not (weights <= set(seq)):
+                    if not weights <= set(seq):
                         emptyweights[i][j] += sum(seq)**2
                 emptyweights[i][j] = int(emptyweights[i][j])
     return emptyweights
