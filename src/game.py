@@ -145,13 +145,3 @@ def is_wins() -> bool:
     else:
         return False
 
-
-def clear(del_save: bool = False) -> None:
-    """"""
-    if del_save:
-        # noinspection PyTypeChecker
-        data.saves_db.pop(tuple(data.players), None)
-    data.players = [data.authorized]
-    data.bot_level = None
-    data.turns = {}
-

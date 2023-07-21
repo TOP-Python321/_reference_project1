@@ -35,7 +35,7 @@ while True:
         # 14. Обновление статистики в базе игроков и обновление файлов данных
         if result is not None:
             player.update_stats(result)
-        game.clear()
+        utils.clear()
 
     elif command in data.COMMANDS['загрузить существующую партию']:
         # нумерованный вывод сохранений активного игрока и запрос конкретного сохранения
@@ -45,9 +45,9 @@ while True:
             # 14. Обновление статистики в базе игроков и обновление файлов данных
             if result is not None:
                 player.update_stats(result)
-                game.clear(del_save=True)
+                utils.clear(del_save=True)
             else:
-                game.clear()
+                utils.clear()
 
     elif command in data.COMMANDS['изменить размер поля']:
         utils.change_dim(utils.dim_input())

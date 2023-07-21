@@ -99,6 +99,16 @@ def win_combinations() -> list[set[int]]:
     return wins
 
 
+def clear(del_save: bool = False) -> None:
+    """"""
+    if del_save:
+        # noinspection PyTypeChecker
+        data.saves_db.pop(tuple(data.players), None)
+    data.players = [data.authorized]
+    data.bot_level = None
+    data.turns = {}
+
+
 def field_template(data_width: int = None) -> str:
     """"""
     if data_width is None:
