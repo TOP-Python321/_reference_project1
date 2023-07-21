@@ -141,7 +141,7 @@ def print_board(right: bool = False) -> None:
         terminal_width = get_terminal_size()[0] - 1
         margin = terminal_width - max(len(line) for line in board.split())
         margin = '\n'.join(' '*margin for _ in board.split())
-        board = utils.concatenate_rows(margin, board)
+        board = utils.concatenate_rows(margin, board, padding=0)
 
     print(board)
 
