@@ -15,9 +15,9 @@ Series = Sequence[Real | str]
 Matrix = Sequence[Series]
 
 
-def easy_mode(bot_token_index) -> int:
+def easy_mode(bot_token_index=None) -> int:
     """Возвращает номер случайной свободной клетки игрового поля."""
-
+    return choice(tuple(set(data.board) - set(data.turns)))
 
 
 def hard_mode(bot_token_index: int) -> int:
