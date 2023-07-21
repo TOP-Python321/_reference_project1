@@ -3,6 +3,7 @@
 """
 
 # стандартная библиотека
+from itertools import islice
 from shutil import get_terminal_size
 # проект
 import bot
@@ -55,8 +56,8 @@ def game() -> list[str] | None:
 
         # 13. ЕСЛИ есть победная комбинация:
         #          переход к этапу 14
-        if is_wins():
-            winner = data.MESSAGES['ничья'].format(data.players[pointer])
+        if is_wins(pointer):
+            winner = data.MESSAGES['победитель'].format(data.players[pointer])
             print('\n', utils.header_text(winner, level=2), sep='')
             return data.players
         # ЕСЛИ нет победной комбинации:
@@ -136,9 +137,9 @@ def print_board(right: int = False) -> None:
     print(board)
 
 
-def is_wins() -> bool:
+def is_wins(token_index: int) -> bool:
     """"""
-    turns = set(data.turns)
+    turns = set(islice(data.turns, token_index, None, 2))
     for comb in data.wins:
         if comb <= turns:
             return True
