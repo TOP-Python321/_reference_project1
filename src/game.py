@@ -35,9 +35,6 @@ def game() -> list[str] | None:
     for t in range(len(data.turns), data.all_cells):
         # индекс-указатель на игрока и токен
         pointer = t % 2
-
-        ...
-
         if data.players[pointer].startswith('#'):
             # 10. Расчёт хода бота
             turn = data.bot_level(pointer)
@@ -52,10 +49,8 @@ def game() -> list[str] | None:
             return None
 
         # 11. Обновление глобальных переменных (опционально: выполнение автосохранения и обновление файлов данных)
-        ...
-
+        data.turns |= {turn: data.TOKENS[pointer]}
         # 12. Вывод игрового поля со сделанным ходом
-        # noinspection PyTypeChecker
         print_board(pointer)
 
         # 13. ЕСЛИ есть победная комбинация:
@@ -65,11 +60,9 @@ def game() -> list[str] | None:
         ...
 
         # победа и поражение
-        clear()
         return data.players
     else:
         # ничья
-        clear()
         return []
 
 
@@ -103,13 +96,13 @@ def load() -> bool:
     data.players = list(players)
     utils.change_dim(save['dim'])
 
-    o = len(save['turns']) % 2
+    parity = len(save['turns']) % 2
     last_turn = save['turns'].popitem()
     data.turns = save['turns']
-    print_board(o)
+    print_board(parity)
     save['turns'] |= (last_turn,)
     data.turns = save['turns']
-    print_board(o-1)
+    print_board(parity - 1)
     return True
 
 
@@ -124,7 +117,7 @@ def save() -> None:
     utils.write_saves()
 
 
-def print_board(right: bool = False) -> None:
+def print_board(right: int = False) -> None:
     """"""
     board = data.field.format(*(data.board | data.turns).values())
     if data.DEBUG:
@@ -142,10 +135,11 @@ def print_board(right: bool = False) -> None:
     print(board)
 
 
-def clear() -> None:
+def clear(del_save: bool = False) -> None:
     """"""
-    # noinspection PyTypeChecker
-    data.saves_db.pop(tuple(data.players), None)
+    if del_save:
+        # noinspection PyTypeChecker
+        data.saves_db.pop(tuple(data.players), None)
     data.players = [data.authorized]
     data.bot_level = None
     data.turns = {}
