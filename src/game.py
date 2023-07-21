@@ -26,7 +26,7 @@ def mode() -> None:
                     data.players += ['#2']
                     data.bot_level = bot.hard_mode
         case '2':
-            player.get_player_name()
+            player.get_player_name(False)
     match player.ask_player('ввод токена'):
         case '2':
             data.players.reverse()

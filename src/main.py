@@ -52,7 +52,10 @@ while True:
     elif command in data.COMMANDS['изменить размер поля']:
         utils.change_dim(utils.dim_input())
 
-    # elif ...
+    elif command in data.COMMANDS['создать или переключиться на игрока']:
+        player.get_player_name()
+
+    # elif command in data.COMMANDS['']:
 
     elif command in data.COMMANDS['выйти']:
         break

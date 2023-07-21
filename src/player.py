@@ -16,7 +16,7 @@ def name_input() -> str:
 
 
 # 3. Запрос имени игрока
-def get_player_name() -> None:
+def get_player_name(switch: bool = True) -> None:
     """Выполняет авторизацию или регистрацию игрока."""
     name = name_input()
     # а) ЕСЛИ имени нет в базе игроков:
@@ -27,9 +27,12 @@ def get_player_name() -> None:
         utils.write_players()
         # вывод раздела помощи
         # help.full()
-    data.authorized = name
-    # б) добавление имени игрока к списку активных игроков
-    data.players += [name]
+    if switch:
+        data.authorized = name
+        data.players = [name]
+    else:
+        # б) добавление имени игрока к списку активных игроков
+        data.players += [name]
 
 
 def ask_player(question: str) -> str:
