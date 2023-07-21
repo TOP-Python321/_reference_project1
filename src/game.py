@@ -55,14 +55,15 @@ def game() -> list[str] | None:
 
         # 13. ЕСЛИ есть победная комбинация:
         #          переход к этапу 14
-        #     ЕСЛИ нет победной комбинации:
-        #           переход к этапу 9
-        ...
-
-        # победа и поражение
-        return data.players
+        if is_wins():
+            winner = data.MESSAGES['ничья'].format(data.players[pointer])
+            print('\n', utils.header_text(winner, level=2), sep='')
+            return data.players
+        # ЕСЛИ нет победной комбинации:
+        #      переход к этапу 9
     else:
         # ничья
+        print('\n', utils.header_text(data.MESSAGES['ничья'], level=2), sep='')
         return []
 
 
@@ -133,6 +134,16 @@ def print_board(right: int = False) -> None:
         board = utils.concatenate_rows(margin, board, padding=0)
 
     print(board)
+
+
+def is_wins() -> bool:
+    """"""
+    turns = set(data.turns)
+    for comb in data.wins:
+        if comb <= turns:
+            return True
+    else:
+        return False
 
 
 def clear(del_save: bool = False) -> None:
