@@ -82,4 +82,5 @@ def update_stats(result: list[str]) -> None:
                 data.players_db[name]['ничьих'] += 1
             except KeyError:
                 pass
+    utils.write_players()
 
