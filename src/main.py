@@ -60,7 +60,12 @@ while True:
     elif command in data.COMMANDS['отобразить раздел помощи']:
         print(help.render_all())
 
-    # elif command in data.COMMANDS['']:
+    elif command in data.COMMANDS['отобразить таблицу результатов']:
+        print()
+        utils.print_table(
+            player.sort_stats(),
+            ['rjust', 'ljust', 'center', 'center', 'center']
+        )
 
     elif command in data.COMMANDS['выйти']:
         break

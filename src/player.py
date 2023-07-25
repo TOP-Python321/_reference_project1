@@ -2,6 +2,8 @@
 Работа с данными игроков.
 """
 
+# стандартная библиотека
+from itertools import chain
 # проект
 import data
 import utils
@@ -86,4 +88,28 @@ def update_stats(result: list[str]) -> None:
             except KeyError:
                 pass
     utils.write_players()
+
+
+def sort_stats() -> list[list]:
+    """"""
+    data.players_db = {
+        player: stat
+        for player, stat in sorted(
+            data.players_db.items(),
+            key=sorting_key,
+            reverse=True
+        )
+    }
+    return [
+        ['', ''] + list(chain(*data.players_db.values()))[:3],
+    ] + [
+        [i, player] + list(data.players_db[player].values())
+        for i, player in enumerate(data.players_db, 1)
+    ]
+
+
+def sorting_key(player_stat: tuple[str, dict]) -> tuple[int, int]:
+    """"""
+    _, stat = player_stat
+    return stat['побед'], sum(stat.values())
 

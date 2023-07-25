@@ -194,3 +194,18 @@ def columnize(text: str, column_width: int) -> list[str]:
     return [' '.join(line) for line in multiline]
 
 
+def print_table(
+        data_list: list[list],
+        align: list[Literal['ljust', 'center', 'rjust']]
+) -> None:
+    """"""
+    widths = [
+        max(len(str(elem)) for elem in column)
+        for column in zip(*data_list)
+    ]
+    print('\n'.join(
+        f" | {' | '.join(getattr(str(cell), align[i])(widths[i]) for i, cell in enumerate(row))} | "
+        for row in data_list
+    ))
+
+
