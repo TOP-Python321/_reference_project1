@@ -53,9 +53,12 @@ def render_interface() -> str:
             f"{field}")
 
 
-def render_commands() -> str:
+def render_commands(section: bool = True) -> str:
     """"""
-    commands = f'\n{utils.header_text("команды", level=2)}\n\n'
+    if section:
+        commands = f'\n{utils.header_text("команды", level=2)}\n\n'
+    else:
+        commands = f"{data.MESSAGES['некорректная команда']}\n\n"
     widths = [max(len(option) for option in column) for column in zip(*data.COMMANDS.values())]
     for command, options in data.COMMANDS.items():
         options = ' : '.join(f'{o:<{widths[i]}}' for i, o in enumerate(options))

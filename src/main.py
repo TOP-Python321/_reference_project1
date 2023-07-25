@@ -66,7 +66,7 @@ while True:
         break
 
     else:
-        print(help.render_commands())
+        print(help.render_commands(False))
 
     # 15. Переход к этапу 4
 
