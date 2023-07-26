@@ -49,7 +49,7 @@ def weights_tokens(bot_token_index: int) -> Matrix:
             try:
                 if board[i][j] == data.TOKENS[bot_token_index]:
                     tokensweights[i][j] = data.WEIGHT_OWN
-                elif board[i][j] == data.TOKENS[bot_token_index - 1]:
+                elif board[i][j] == data.TOKENS[bot_token_index-1]:
                     tokensweights[i][j] = data.WEIGHT_FOE
             except IndexError:
                 pass

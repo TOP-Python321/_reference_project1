@@ -56,6 +56,9 @@ while True:
     elif command in data.COMMANDS['создать или переключиться на игрока']:
         player.get_player_name()
 
+    elif command in data.COMMANDS['вкл/выкл координаты']:
+        help.switch_superscripts()
+
     elif command in data.COMMANDS['отобразить раздел помощи']:
         print(help.render_all())
 

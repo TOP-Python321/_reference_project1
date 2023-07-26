@@ -86,3 +86,11 @@ def render_all() -> str:
     """Возвращает строку со всеми подразделами справки."""
     return f'{render_rules()}{render_interface()}{render_commands()}'
 
+
+def switch_superscripts() -> None:
+    """Переключает режим отображения надстрочных подсказок."""
+    data.SUPERSCRIPTS = not data.SUPERSCRIPTS
+    print(data.MESSAGES['координаты'].format(
+        ('выключено', 'включено')[data.SUPERSCRIPTS])
+    )
+

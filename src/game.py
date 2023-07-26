@@ -132,19 +132,25 @@ def save() -> None:
     utils.write_saves()
 
 
-def print_board(right: int = False) -> None:
+def print_board(token_index: int = False) -> None:
     """Выводит в stdout игровое поле со сделанными ходами. При включенном режиме отладки рядом с игровым полем выводит матрицу принятия решений сложного бота.
 
-    :param right: выравнивание игрового поля по правому краю окна терминала
+    :param token_index: выравнивание игрового поля по правому краю окна терминала
     """
-    board = data.field.format(*(data.board | data.turns).values())
+    # отображает надстрочные подсказки только во время вывода поля игрока (можно убрать всё от and)
+    if data.SUPERSCRIPTS and not data.players[token_index].startswith('#'):
+        board = (data.board_with_superscripts | data.turns).values()
+        board = data.field_for_superscripts.format(*(f'{v:^3}' for v in board))
+    else:
+        board = data.field.format(*(data.board | data.turns).values())
+
     if data.DEBUG:
         matr = bot.vectorization(data.debug_data.get('result'))
         cw = max(len(str(n)) for n in matr)
         matr = utils.field_template(cw).format(*matr)
         board = utils.concatenate_rows(board, matr)
 
-    if right:
+    if token_index:
         terminal_width = get_terminal_size()[0] - 1
         margin = terminal_width - max(len(line) for line in board.split())
         margin = '\n'.join(' '*margin for _ in board.split())

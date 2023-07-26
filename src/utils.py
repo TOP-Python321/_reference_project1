@@ -82,7 +82,12 @@ def change_dim(new_dim: int) -> None:
     width = max(len(str(n)) for n in data.all_cells_range)
     ft = field_template(data_width=width)
     data.field_with_coords = ft.format(*(f'{n:^{width}}' for n in data.all_cells_range))
+    data.field_for_superscripts = field_template(no_padding=True)
     data.board = dict.fromkeys(data.all_cells_range, ' ')
+    data.board_with_superscripts = {
+        n: f'{str_superscript(n):>3}'
+        for n in data.all_cells_range
+    }
     data.MESSAGES['ход не в диапазоне'] = f' ! номер ячейки должен находиться в диапазоне от 1 до {data.all_cells} включительно'
     data.START_MATRICES = (
         bot.calc_sm_cross(),
@@ -107,27 +112,38 @@ def win_combinations() -> list[set[int]]:
     return wins
 
 
-def clear(del_save: bool = False) -> None:
-    """Возвращает глобальные переменные, связанные с игровым процессом, к состоянию до начала партии."""
-    if del_save:
-        data.saves_db.pop(tuple(data.players), None)
-    data.players = [data.authorized]
-    data.bot_level = None
-    data.turns = {}
+def field_template(
+        data_width: int = None,
+        no_padding: bool = False
+) -> str:
+    """Конструирует шаблон игрового поля для текущего размера. Опционально может быть передана ширина столбца без учёта отступов (применяется ко всем столбцам). Опционально может быть сгенерирован шаблон без отступов.
 
-
-def field_template(data_width: int = None) -> str:
-    """Конструирует шаблон игрового поля для текущего размера. Опционально может быть передана ширина столбца без учёта отступов (применяется ко всем столбцам)."""
+    :param data_width: ширина столбца без учёта отступов
+    :param no_padding: убрать отступы
+    """
     if data_width is None:
         field_width = data.dim*(3 + max(len(t) for t in data.TOKENS)) - 1
     else:
         # ширина данных в столбце по умолчанию составляет один символ для данных
         field_width = data.dim*(3 + data_width) - 1
     v_sep, h_sep = '|', '—'
-    # по одному пробелу слева и справа от подстановочного места — отступы от данных до вертикальных разделителей
-    v_sep = v_sep.join([' {} ']*data.dim)
+    # подстановочное место шаблона ИЛИ по одному пробелу слева и справа от подстановочного места — отступы от данных до вертикальных разделителей
+    cell = '{}' if no_padding else ' {} '
+    v_sep = v_sep.join([cell]*data.dim)
     h_sep = f'\n{h_sep*field_width}\n'
     return h_sep.join([v_sep]*data.dim)
+
+
+def str_superscript(number: int) -> str:
+    """Возвращает строковое представление числа с помощью надстрочных символов цифр."""
+    digits = []
+    while number:
+        number, rem = divmod(number, 10)
+        digits += [rem]
+    return ''.join(
+        data.superscript_digits[d]
+        for d in digits[::-1]
+    )
 
 
 def concatenate_rows(
@@ -202,6 +218,15 @@ def columnize(text: str, column_width: int) -> list[str]:
             line_len = word_len
             i += 1
     return [' '.join(line) for line in multiline]
+
+
+def clear(del_save: bool = False) -> None:
+    """Возвращает глобальные переменные, связанные с игровым процессом, к состоянию до начала партии."""
+    if del_save:
+        data.saves_db.pop(tuple(data.players), None)
+    data.players = [data.authorized]
+    data.bot_level = None
+    data.turns = {}
 
 
 def print_table(
