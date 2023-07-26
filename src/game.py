@@ -6,7 +6,6 @@
 from itertools import islice
 from shutil import get_terminal_size
 from time import sleep
-
 # проект
 import bot
 import data
@@ -16,7 +15,7 @@ import utils
 
 
 def mode() -> None:
-    """"""
+    """Управляет ветвлением запросов к игроку при настройке игрового процесса в начале новой партии."""
     match player.ask_player('ввод режима'):
         case '1':
             match player.ask_player('ввод уровня'):
@@ -33,8 +32,36 @@ def mode() -> None:
             data.players.reverse()
 
 
+def load() -> bool:
+    """Управляет загрузкой партии. Выводит два последних хода сохранённой партии."""
+    save = player.ask_for_load()
+    if save is None:
+        print(data.MESSAGES['нет сохранений'])
+        return False
+    players, save = save
+    data.players = list(players)
+    utils.change_dim(save['dim'])
+
+    parity = len(save['turns']) % 2
+    try:
+        # попытка извлечения последнего хода
+        last_turn = save['turns'].popitem()
+    except KeyError:
+        # будет выведено пустое поле
+        print_board(right=True)
+        return True
+    # все ходы кроме последнего
+    data.turns = save['turns']
+    print_board(parity)
+    # возвращение последнего хода
+    save['turns'] |= (last_turn,)
+    data.turns = save['turns']
+    print_board(parity - 1)
+    return True
+
+
 def game() -> tuple[str, str] | tuple | None:
-    """Контроллер игрового процесса."""
+    """Управляет игровым процессом."""
     print(help.render_numerated_filed())
 
     # 9. Цикл до максимального количества ходов
@@ -94,32 +121,8 @@ def get_human_turn() -> int | None:
                 print(data.MESSAGES['ход не в диапазоне'])
 
 
-def load() -> bool:
-    """"""
-    save = player.ask_for_load()
-    if save is None:
-        print(data.MESSAGES['нет сохранений'])
-        return False
-    players, save = save
-    data.players = list(players)
-    utils.change_dim(save['dim'])
-
-    parity = len(save['turns']) % 2
-    try:
-        last_turn = save['turns'].popitem()
-    except KeyError:
-        print_board(right=True)
-        return True
-    data.turns = save['turns']
-    print_board(parity)
-    save['turns'] |= (last_turn,)
-    data.turns = save['turns']
-    print_board(parity - 1)
-    return True
-
-
 def save() -> None:
-    """"""
+    """Добавляет данные текущей партии в базу сохранений и обновляет файлы данных."""
     data.saves_db |= {
         tuple(data.players): {
             'dim': data.dim,
@@ -130,7 +133,10 @@ def save() -> None:
 
 
 def print_board(right: int = False) -> None:
-    """"""
+    """Выводит в stdout игровое поле со сделанными ходами. При включенном режиме отладки рядом с игровым полем выводит матрицу принятия решений сложного бота.
+
+    :param right: выравнивание игрового поля по правому краю окна терминала
+    """
     board = data.field.format(*(data.board | data.turns).values())
     if data.DEBUG:
         matr = bot.vectorization(data.debug_data.get('result'))
@@ -150,7 +156,8 @@ def print_board(right: int = False) -> None:
 
 
 def is_wins(token_index: int) -> bool:
-    """"""
+    """Проверяет наличие победной комбинации для одного игрока по индексу-указателю."""
+    # взятие "среза" у произвольного итерируемого объекта без явного преобразования в последовательность — все ходы одного игрока
     turns = set(islice(data.turns, token_index, None, 2))
     for comb in data.wins:
         if comb <= turns:

@@ -59,6 +59,7 @@ def write_saves() -> None:
 
 
 def dim_input() -> int:
+    """Циклически до корректного запрашивает у игрока размер игрового поля и возвращает преобразованный в число новый размер."""
     while True:
         dim = input(data.MESSAGES["ввод размерности"])
         if data.DIM_PATTERN.fullmatch(dim):
@@ -67,7 +68,7 @@ def dim_input() -> int:
 
 
 def change_dim(new_dim: int) -> None:
-    """"""
+    """Устанавливает новый размер игрового поля, пересчитывает все связанные с размером глобальные переменные."""
     data.dim = new_dim
     data.dim_range = range(new_dim)
     data.all_cells = new_dim**2
@@ -86,7 +87,7 @@ def change_dim(new_dim: int) -> None:
 
 
 def win_combinations() -> list[set[int]]:
-    """"""
+    """Вычисляет все выигрышные комбинации для текущего размера игрового поля."""
     wins = [
         set(data.all_cells_range[::data.dim+1]),
         set(data.all_cells_range[data.dim-1:data.all_cells-data.dim+1:data.dim-1]),
@@ -103,9 +104,8 @@ def win_combinations() -> list[set[int]]:
 
 
 def clear(del_save: bool = False) -> None:
-    """"""
+    """Возвращает глобальные переменные, связанные с игровым процессом, к состоянию до начала партии."""
     if del_save:
-        # noinspection PyTypeChecker
         data.saves_db.pop(tuple(data.players), None)
     data.players = [data.authorized]
     data.bot_level = None
@@ -113,12 +113,14 @@ def clear(del_save: bool = False) -> None:
 
 
 def field_template(data_width: int = None) -> str:
-    """"""
+    """Конструирует шаблон игрового поля для текущего размера. Опционально может быть передана ширина столбца без учёта отступов (применяется ко всем столбцам)."""
     if data_width is None:
         field_width = data.dim*(3 + max(len(t) for t in data.TOKENS)) - 1
     else:
+        # ширина данных в столбце по умолчанию составляет один символ для данных
         field_width = data.dim*(3 + data_width) - 1
     v_sep, h_sep = '|', '—'
+    # по одному пробелу слева и справа от подстановочного места — отступы от данных до вертикальных разделителей
     v_sep = v_sep.join([' {} ']*data.dim)
     h_sep = f'\n{h_sep*field_width}\n'
     return h_sep.join([v_sep]*data.dim)
@@ -130,7 +132,10 @@ def concatenate_rows(
         *multilines: str,
         padding: int = 8
 ) -> str:
-    """"""
+    """Объединяет произвольное количество строк текстов-колонок в одну строку с несколькими колонками и отступом между ними.
+
+    :param padding: ширина отступа между колонками в пробелах
+    """
     multilines = multiline1, multiline2, *multilines
     multilines = [m.split('\n') for m in multilines]
     padding = ' '*padding
@@ -172,6 +177,7 @@ def header_text(
                 for line in columnize(text, data_width)
             )
 
+    # можно добавить дополнительные уровни заголовков с собственным форматированием
     # elif level == 3:
     #     ...
 
@@ -198,7 +204,11 @@ def print_table(
         *data_list: list,
         align: list[Literal['ljust', 'center', 'rjust']]
 ) -> None:
-    """"""
+    """Выводит в stdout переданные списки данных в табличном виде без горизонтальных разделителей. Для корректного вывода количество элементов в каждом списке (количество столбцов) должно быть одинаковым. Отступы до вертикальных разделителей всегда один пробел.
+
+    :param data_list: произвольное количество списков произвольных данных
+    :param align: настройка выравнивания в столбцах таблицы
+    """
     widths = [
         max(len(str(elem)) for elem in column)
         for column in zip(*data_list)

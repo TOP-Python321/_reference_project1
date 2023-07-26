@@ -27,8 +27,6 @@ def get_player_name(switch: bool = True) -> None:
         data.players_db[name] = {'побед': 0, 'поражений': 0, 'ничьих': 0}
         # обновление файлов данных
         utils.write_players()
-        # вывод раздела помощи
-        # help.full()
     if switch:
         data.authorized = name
         data.players = [name]
@@ -38,7 +36,7 @@ def get_player_name(switch: bool = True) -> None:
 
 
 def ask_player(question: str) -> str:
-    """"""
+    """Циклически до корректного запрашивает у игрока выбор из вариантов 1 или 2, и возвращает этот выбор."""
     while True:
         choice = input(data.MESSAGES[question])
         if choice in '12':
@@ -47,7 +45,10 @@ def ask_player(question: str) -> str:
 
 
 def ask_for_load() -> tuple[tuple[str, str], dict] | None:
-    """"""
+    """Конструирует строку с нумерованным списком всех сохранений авторизованного игрока, и циклически до корректного запрашивает номер сохранения. Возвращает выбранное сохранение.
+
+    :return: сохранение игрока или None в случае отсутствия у игрока сохранённых игр
+    """
     slots = []
     for i, players in enumerate(data.saves_db, 1):
         if data.authorized in players:
@@ -90,8 +91,8 @@ def update_stats(result: list[str]) -> None:
     utils.write_players()
 
 
-def sort_stats() -> list[list]:
-    """"""
+def sort_stats(headers: bool = True) -> list[list]:
+    """Возвращает сортированный список данных об игроках и их статистике. Опционально первым элементом списка помещаются подзаголовки."""
     data.players_db = {
         player: stat
         for player, stat in sorted(
@@ -100,16 +101,17 @@ def sort_stats() -> list[list]:
             reverse=True
         )
     }
-    return [
-        ['', ''] + list(chain(*data.players_db.values()))[:3],
-    ] + [
+    headers = [['#', 'игрок'] + list(chain(*data.players_db.values()))[:3]] if headers else []
+    return headers + [
         [i, player] + list(data.players_db[player].values())
         for i, player in enumerate(data.players_db, 1)
     ]
 
 
 def sorting_key(player_stat: tuple[str, dict]) -> tuple[int, int]:
-    """"""
+    """Возвращает сравниваемые во время сортировки значения."""
     _, stat = player_stat
+    # первый уровень сортировки: количество побед
+    # второй уровень сортировки: количество сыгранных партий
     return stat['побед'], sum(stat.values())
 

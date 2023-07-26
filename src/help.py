@@ -18,7 +18,7 @@ INTERFACE = (
 
 
 def render_rules() -> str:
-    """"""
+    """Возвращает строку с подзаголовком и подразделом справки о правилах игры."""
     data_width = get_terminal_size()[0] - 1 - 4
     rules = RULES.format(
         token_0=repr(data.TOKENS[0]),
@@ -36,7 +36,7 @@ def render_rules() -> str:
 
 
 def render_numerated_filed(center: bool = True) -> str:
-    """"""
+    """Возвращает строку игрового поля с номерами ячеек, выровненного по центру окна терминала."""
     if data.field_with_coords is None:
         return ''
     field = data.field_with_coords
@@ -50,7 +50,7 @@ def render_numerated_filed(center: bool = True) -> str:
 
 
 def render_interface() -> str:
-    """"""
+    """Возвращает строку с подзаголовком и подразделом справки об интерфейсе игры."""
     data_width = get_terminal_size()[0] - 1 - 4
     interface = '\n\n'.join(
         '\n'.join(
@@ -66,9 +66,12 @@ def render_interface() -> str:
             f"{render_numerated_filed()}")
 
 
-def render_commands(section: bool = True) -> str:
-    """"""
-    if section:
+def render_commands(header: bool = True) -> str:
+    """Возвращает строку с подзаголовком (опционально) и подразделом справки о командах главного меню.
+
+    :param header: добавить или не добавлять подзаголовок
+    """
+    if header:
         commands = f'\n{utils.header_text("команды", level=2)}\n\n'
     else:
         commands = f"{data.MESSAGES['некорректная команда']}\n\n"
@@ -80,6 +83,6 @@ def render_commands(section: bool = True) -> str:
 
 
 def render_all() -> str:
-    """"""
+    """Возвращает строку со всеми подразделами справки."""
     return f'{render_rules()}{render_interface()}{render_commands()}'
 
