@@ -10,6 +10,7 @@ from time import sleep
 # проект
 import bot
 import data
+import help
 import player
 import utils
 
@@ -34,7 +35,7 @@ def mode() -> None:
 
 def game() -> tuple[str, str] | tuple | None:
     """Контроллер игрового процесса."""
-    print(f'\n{data.field_with_coords}')
+    print(help.render_numerated_filed())
 
     # 9. Цикл до максимального количества ходов
     for t in range(len(data.turns), data.all_cells):
@@ -96,7 +97,7 @@ def get_human_turn() -> int | None:
 def load() -> bool:
     """"""
     save = player.ask_for_load()
-    if not save:
+    if save is None:
         print(data.MESSAGES['нет сохранений'])
         return False
     players, save = save
@@ -104,7 +105,11 @@ def load() -> bool:
     utils.change_dim(save['dim'])
 
     parity = len(save['turns']) % 2
-    last_turn = save['turns'].popitem()
+    try:
+        last_turn = save['turns'].popitem()
+    except KeyError:
+        print_board(right=True)
+        return True
     data.turns = save['turns']
     print_board(parity)
     save['turns'] |= (last_turn,)
