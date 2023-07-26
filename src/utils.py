@@ -195,7 +195,7 @@ def columnize(text: str, column_width: int) -> list[str]:
 
 
 def print_table(
-        data_list: list[list],
+        *data_list: list,
         align: list[Literal['ljust', 'center', 'rjust']]
 ) -> None:
     """"""
@@ -207,5 +207,4 @@ def print_table(
         f" | {' | '.join(getattr(str(cell), align[i])(widths[i]) for i, cell in enumerate(row))} | "
         for row in data_list
     ))
-
 

@@ -41,7 +41,6 @@ while True:
 
     elif command in data.COMMANDS['загрузить существующую партию']:
         # нумерованный вывод сохранений активного игрока и запрос конкретного сохранения
-        ...
         if game.load():
             result = game.game()
             # 14. Обновление статистики в базе игроков и обновление файлов данных
@@ -63,8 +62,8 @@ while True:
     elif command in data.COMMANDS['отобразить таблицу результатов']:
         print()
         utils.print_table(
-            player.sort_stats(),
-            ['rjust', 'ljust', 'center', 'center', 'center']
+            *player.sort_stats(),
+            align=['rjust', 'ljust', 'center', 'center', 'center']
         )
 
     elif command in data.COMMANDS['выйти']:
@@ -74,7 +73,6 @@ while True:
         print(help.render_commands(False))
 
     # 15. Переход к этапу 4
-
 
 # 16. Обработка завершения работы приложения
 
